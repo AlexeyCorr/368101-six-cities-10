@@ -1,16 +1,13 @@
-type Place = {
-  price: number;
-  rating: number;
-  title: string;
-  type: string;
-}
+import { Link } from 'react-router-dom';
+
+import { Place } from '../../types/place';
 
 type CardPros = {
   place: Place;
 }
 
 export default function Card({ place }: CardPros): JSX.Element {
-  const {price, title, rating, type} = place;
+  const {id, price, title, rating, type} = place;
 
   return (
     <article className="cities__card place-card">
@@ -18,9 +15,15 @@ export default function Card({ place }: CardPros): JSX.Element {
         <span>Premium</span>
       </div>
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="#">
-          <img className="place-card__image" src="img/apartment-01.jpg" width={260} height={200} alt="Place image" />
-        </a>
+        <Link to={`/offer/${id}`}>
+          <img
+            className="place-card__image"
+            src="img/apartment-01.jpg"
+            width="260"
+            height="200"
+            alt="Place image"
+          />
+        </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
@@ -42,7 +45,7 @@ export default function Card({ place }: CardPros): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{title}</a>
+          <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>
