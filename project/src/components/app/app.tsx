@@ -1,7 +1,7 @@
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../utils/const';
 
-import { Place } from '../../types/place';
+import { Offers } from '../../types/offer';
 
 import DefaultLayout from '../../layouts/default-layout';
 import MainScreen from '../../pages/main-screen/main-screen';
@@ -12,18 +12,20 @@ import OfferScreen from '../../pages/offer-screen/offer-screen';
 
 import PrivateRoute from '../private-route/private-route';
 
+import { favorites } from './../../mocks/favorites';
+
 type AppProps = {
-  places: Place[]
+  offers: Offers
 }
 
-function App({places}: AppProps): JSX.Element {
+function App({offers}: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<DefaultLayout />}>
           <Route
             index
-            element={<MainScreen places={places} />}
+            element={<MainScreen offers={offers} />}
           />
           <Route
             path={AppRoute.Login}
@@ -37,9 +39,9 @@ function App({places}: AppProps): JSX.Element {
             path={AppRoute.Favorites}
             element={
               <PrivateRoute
-                authorizationStatus={AuthorizationStatus.NoAuth}
+                authorizationStatus={AuthorizationStatus.Auth}
               >
-                <FavoritesScreen />
+                <FavoritesScreen favorites={favorites} />
               </PrivateRoute>
             }
           />

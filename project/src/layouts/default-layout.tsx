@@ -14,7 +14,7 @@ export default function DetaultLayout(): JSX.Element {
         <Outlet />
       </main>
 
-      { pathname.includes('favorites') && <Footer /> }
+      { pathname.includes('favorites') ? <Footer /> : null }
     </div>
   );
 }
