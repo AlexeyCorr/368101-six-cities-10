@@ -1,21 +1,24 @@
 import Card from '../card/card';
-import { Offers } from '../../types/offer';
+import { Offers, ClassNameCard } from '../../types/offer';
+import { useState } from 'react';
 
 type CardListProps = {
-  offers: Offers,
-  className: string,
-  isFavorite: boolean
+  offers: Offers;
+  className: string;
+  cardType: ClassNameCard;
 }
 
-export default function CardList({offers, className, isFavorite}: CardListProps): JSX.Element {
+export default function CardList({offers, className, cardType}: CardListProps): JSX.Element {
+  const [activeOfferId, setActiveOffer] = useState(0);
+
   return (
-    <div className={className}>
+    <div className={className} data-active={activeOfferId}>
       {offers.map((offer) => (
         <Card
           key={offer.id}
           offer={offer}
-          onCardMouseEnter={() => console.log(1)} // eslint-disable-line no-console
-          isFavorite={isFavorite}
+          onCardMouseEnter={() => setActiveOffer(offer.id)}
+          cardType={cardType}
         />
       ))}
     </div>

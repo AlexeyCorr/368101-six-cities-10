@@ -25,7 +25,7 @@ export default function FavoritesScreen({ favorites }: FavoritesScreenProps): JS
                 <CardList
                   className="favorites__places"
                   offers={offers}
-                  isFavorite
+                  cardType={'favorite'}
                 />
               </li>
             ))}

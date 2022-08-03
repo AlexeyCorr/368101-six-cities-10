@@ -1,5 +1,6 @@
 import { Offers } from '../../types/offer';
 import CardList from '../../components/card-list/card-list';
+import Map from '../../components/map/map';
 
 type MainScreenProps = {
   offers: Offers
@@ -69,12 +70,16 @@ export default function MainScreen({ offers }: MainScreenProps): JSX.Element {
             <CardList
               className="cities__places-list places__list tabs__content"
               offers={offers}
-              isFavorite={false}
+              cardType={'main'}
             />
 
           </section>
           <div className="cities__right-section">
-            <section className="cities__map map" />
+            <Map
+              city={offers[0].city}
+              offers={offers}
+              selectedOffer={offers[0]}
+            />
           </div>
         </div>
       </div>
