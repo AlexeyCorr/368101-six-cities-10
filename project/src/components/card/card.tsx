@@ -1,15 +1,12 @@
 import { Link } from 'react-router-dom';
 import { Offer, ClassNameCard } from '../../types/offer';
 import { ClassNameCardType } from '../../utils/const';
+import { getRatingInPercent } from '../../utils/helpers';
 
 type CardPros = {
   offer: Offer;
   cardType: ClassNameCard;
   onCardMouseEnter: () => void
-}
-
-function getRatingInPercent (rating: number): string {
-  return `${rating * 100 / 5}%`;
 }
 
 export default function Card({ offer, cardType, onCardMouseEnter }: CardPros): JSX.Element {
