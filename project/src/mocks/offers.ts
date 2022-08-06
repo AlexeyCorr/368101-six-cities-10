@@ -357,3 +357,42 @@ export const offers = [
     id: 21
   }
 ];
+
+export const offerReviews = [
+  {
+    comment: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
+    date: 'Sat Aug 06 2022 13:11:14 GMT+0500 (Uzbekistan Standard Time)',
+    id: 1,
+    rating: 4,
+    user: {
+      avatarUrl: 'img/avatar-max.jpg',
+      id: 1,
+      isPro: false,
+      name: 'Max'
+    }
+  },
+  {
+    comment: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
+    date: 'Sat Aug 06 2022 13:11:14 GMT+0500 (Uzbekistan Standard Time)',
+    id: 2,
+    rating: 4,
+    user: {
+      avatarUrl: 'img/avatar-max.jpg',
+      id: 1,
+      isPro: false,
+      name: 'Max'
+    }
+  },
+  {
+    comment: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
+    date: 'Sat Aug 06 2022 13:11:14 GMT+0500 (Uzbekistan Standard Time)',
+    id: 3,
+    rating: 4,
+    user: {
+      avatarUrl: 'img/avatar-max.jpg',
+      id: 1,
+      isPro: false,
+      name: 'Max'
+    }
+  }
+];

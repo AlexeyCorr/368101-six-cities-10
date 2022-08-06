@@ -2,9 +2,10 @@ import { useParams } from 'react-router-dom';
 
 import Reviews from '../../components/reviews/reviews';
 import CardList from '../../components/card-list/card-list';
+import Map from '../../components/map/map';
 import { getRatingInPercent } from '../../utils/helpers';
 
-import { offers } from '../../mocks/offers';
+import { offers, offerReviews } from '../../mocks/offers';
 
 export default function OfferScreen(): JSX.Element | null {
   const { id } = useParams();
@@ -13,6 +14,8 @@ export default function OfferScreen(): JSX.Element | null {
   if (!currentOffer) {
     return null;
   }
+
+  const localOffers = offers.filter(({city}) => city.name === currentOffer.city.name);
 
   const {
     price,
@@ -126,12 +129,16 @@ export default function OfferScreen(): JSX.Element | null {
               </div>
             </div>
 
-            <Reviews />
+            <Reviews reviews={offerReviews} />
           </div>
         </div>
 
-        <section className="property__map map" />
-
+        <Map
+          city={currentOffer.city}
+          offers={localOffers}
+          selectedOffer={currentOffer}
+          className="property__map"
+        />
       </section>
 
       <div className="container">
@@ -140,7 +147,7 @@ export default function OfferScreen(): JSX.Element | null {
 
           <CardList
             className="near-places__list"
-            offers={offers.slice(0, 3)}
+            offers={localOffers}
             cardType={'recommend'}
           />
         </section>

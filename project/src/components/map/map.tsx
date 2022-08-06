@@ -9,6 +9,7 @@ type MapProps = {
   city: City;
   offers: Offers;
   selectedOffer: Offer | undefined;
+  className: string;
 }
 
 const defaultCustomIcon = new Icon({
@@ -31,7 +32,7 @@ export default function Map(props: MapProps): JSX.Element {
 
   useEffect(() => {
     if (map) {
-      offers.forEach(({ title, location }) => {
+      offers.forEach(({ id, location }) => {
         const marker = new Marker({
           lat: location.latitude,
           lng: location.longitude,
@@ -39,7 +40,7 @@ export default function Map(props: MapProps): JSX.Element {
 
         marker
           .setIcon(
-            selectedOffer !== undefined && title === selectedOffer.title
+            selectedOffer !== undefined && id === selectedOffer.id
               ? currentCustomIcon
               : defaultCustomIcon
           )
@@ -51,7 +52,7 @@ export default function Map(props: MapProps): JSX.Element {
   return (
     <section
       ref={mapRef}
-      className="cities__map map"
+      className={`${props.className} map`}
     />
   );
 }

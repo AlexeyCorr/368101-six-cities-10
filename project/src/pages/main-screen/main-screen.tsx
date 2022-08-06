@@ -79,6 +79,7 @@ export default function MainScreen({ offers }: MainScreenProps): JSX.Element {
               city={offers[0].city}
               offers={offers}
               selectedOffer={offers[0]}
+              className="cities__map"
             />
           </div>
         </div>
