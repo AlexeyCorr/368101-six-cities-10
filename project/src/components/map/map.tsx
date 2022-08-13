@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react';
-import { Icon, Marker } from 'leaflet';
+import { Icon, LatLng, Marker } from 'leaflet';
 import useMap from '../../hooks/use-map';
 import { MarkerDefault, MarkerCurrent } from '../../utils/const';
 import { City, Offers, Offer } from '../../types/offer';
@@ -46,8 +46,10 @@ export default function Map(props: MapProps): JSX.Element {
           )
           .addTo(map);
       });
+
+      map.panTo(new LatLng(city.location.latitude, city.location.longitude));
     }
-  }, [map, offers, selectedOffer]);
+  }, [city, map, offers, selectedOffer]);
 
   return (
     <section

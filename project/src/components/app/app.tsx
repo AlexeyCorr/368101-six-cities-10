@@ -1,8 +1,6 @@
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../utils/const';
 
-import { Offers } from '../../types/offer';
-
 import DefaultLayout from '../../layouts/default-layout';
 import MainScreen from '../../pages/main-screen/main-screen';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
@@ -14,11 +12,7 @@ import PrivateRoute from '../private-route/private-route';
 
 import { favorites } from './../../mocks/favorites';
 
-type AppProps = {
-  offers: Offers
-}
-
-function App({offers}: AppProps): JSX.Element {
+function App(): JSX.Element {
   return (
     <BrowserRouter>
       <ScrollToTop />
@@ -27,7 +21,7 @@ function App({offers}: AppProps): JSX.Element {
         <Route path='/' element={<DefaultLayout />}>
           <Route
             index
-            element={<MainScreen offers={offers} />}
+            element={<MainScreen />}
           />
           <Route
             path={AppRoute.Login}
