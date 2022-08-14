@@ -1,13 +1,25 @@
+import { useState, useEffect } from 'react';
 import CardList from '../../components/card-list/card-list';
 import Map from '../../components/map/map';
-import { Offers, City } from '../../types/offer';
+import Sorts from '../sorts/sorts';
+import { Offers, City, Offer } from '../../types/offer';
+import { SORTS } from '../../utils/const';
+import { getSortedOffers } from '../../utils/helpers';
 
 type MainProps = {
   offers: Offers
   city: City
 }
 
-export default function Main({offers, city}: MainProps): JSX.Element {
+export default function Main({ offers, city }: MainProps): JSX.Element {
+  const [currentSort, setCurrentSort] = useState(SORTS[0]);
+  const [sortedOffers, setSortedOffers] = useState(offers);
+  const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(undefined);
+
+  useEffect(() => {
+    setSortedOffers(getSortedOffers(currentSort, offers));
+  }, [currentSort, offers]);
+
   return (
     <div className="cities__places-container container">
       <section className="cities__places places">
@@ -19,30 +31,18 @@ export default function Main({offers, city}: MainProps): JSX.Element {
           {offers.length} {offers.length > 1 ? 'places' : 'place'} to stay in {city.name}
         </b>
 
-        <form className="places__sorting" action="#" method="get">
-          <span className="places__sorting-caption">
-            Sort by
-          </span>
-
-          <span className="places__sorting-type" tabIndex={0}>
-            Popular
-            <svg className="places__sorting-arrow" width={7} height={4}>
-              <use xlinkHref="#icon-arrow-select" />
-            </svg>
-          </span>
-
-          <ul className="places__options places__options--custom places__options--opened">
-            <li className="places__option places__option--active" tabIndex={0}>Popular</li>
-            <li className="places__option" tabIndex={0}>Price: low to high</li>
-            <li className="places__option" tabIndex={0}>Price: high to low</li>
-            <li className="places__option" tabIndex={0}>Top rated first</li>
-          </ul>
-        </form>
+        <Sorts
+          sorts={SORTS}
+          currentSort={currentSort}
+          onClickSortHandler={setCurrentSort}
+        />
 
         <CardList
           className="cities__places-list places__list tabs__content"
-          offers={offers}
+          offers={sortedOffers}
           cardType={'main'}
+          onMouseEnterCardHandler={(offer) => setSelectedOffer(offer)}
+          onMouseLeaveCardHandler={() => setSelectedOffer(undefined)}
         />
       </section>
 
@@ -50,7 +50,7 @@ export default function Main({offers, city}: MainProps): JSX.Element {
         <Map
           city={city}
           offers={offers}
-          selectedOffer={offers[0]}
+          selectedOffer={selectedOffer}
           className="cities__map"
         />
       </div>

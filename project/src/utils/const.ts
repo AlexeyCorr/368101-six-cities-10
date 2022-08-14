@@ -1,4 +1,5 @@
 import { City } from '../types/offer';
+import { Sort } from '../types';
 
 export enum AppRoute {
   Root = '/',
@@ -92,4 +93,30 @@ export const CITIES: City[] = [
       zoom: 13
     }
   },
+];
+
+export const SortType = {
+  POPULAR: 'popular',
+  CHIP: 'chip',
+  EXPENSIVE: 'expensive',
+  RATIND: 'rating'
+};
+
+export const SORTS: Sort[] = [
+  {
+    type: SortType.POPULAR,
+    name: 'Popular'
+  },
+  {
+    type: SortType.CHIP,
+    name: 'Price: low to high'
+  },
+  {
+    type: SortType.EXPENSIVE,
+    name: 'Price: high to low'
+  },
+  {
+    type: SortType.RATIND,
+    name: 'Top rated first'
+  }
 ];

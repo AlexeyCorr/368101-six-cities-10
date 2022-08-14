@@ -6,10 +6,12 @@ import { getRatingInPercent } from '../../utils/helpers';
 type CardPros = {
   offer: Offer;
   cardType: ClassNameCard;
-  onCardMouseEnter: () => void
+  onMouseEnterCardHandler: () => void;
+  onMouseLeaveCardHandler: () => void;
 }
 
-export default function Card({ offer, cardType, onCardMouseEnter }: CardPros): JSX.Element {
+export default function Card(props: CardPros): JSX.Element {
+  const { offer, cardType, onMouseEnterCardHandler, onMouseLeaveCardHandler } = props;
   const {
     id,
     price,
@@ -24,7 +26,8 @@ export default function Card({ offer, cardType, onCardMouseEnter }: CardPros): J
   return (
     <article
       className={`${ClassNameCardType[cardType].card} place-card`}
-      onMouseEnter={onCardMouseEnter}
+      onMouseEnter={onMouseEnterCardHandler}
+      onMouseLeave={onMouseLeaveCardHandler}
     >
       {
         isPremium
