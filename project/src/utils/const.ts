@@ -14,6 +14,14 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
+export enum APIRoute {
+  Offers = '/hotels',
+  Favorites = '/favorite',
+  Comments = '/comments',
+  Login = '/login',
+  Logout = '/logout',
+}
+
 export const ClassNameCardType = {
   main: {
     card: 'cities__card',

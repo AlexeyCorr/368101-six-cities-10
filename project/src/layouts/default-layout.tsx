@@ -7,19 +7,12 @@ export default function DetaultLayout(): JSX.Element {
   const { pathname } = useLocation();
 
   return (
-    <div
-      className="page"
-      style={{
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column'
-      }}
-    >
+    <div className={`page ${pathname === '/' ? 'page--main' : ''}`}>
       <Header />
 
       <Outlet />
 
-      { pathname.includes('favorites') ? <Footer /> : null }
+      { pathname === '/favorites' && <Footer /> }
     </div>
   );
 }

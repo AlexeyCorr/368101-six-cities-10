@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeCurrentCity, loadOffers } from './action';
+import { changeCurrentCity, loadOffers, setDataLoadedStatus } from './action';
 import { getOffersInCurrentCity } from '../utils/helpers';
 import { City, Offers } from '../types/offer';
 import { CITIES } from '../utils/const';
@@ -9,13 +9,15 @@ type InitalState = {
   cities: City[];
   offers: Offers;
   localOffers: Offers;
+  isDataLoaded: boolean;
 }
 
 const initialState: InitalState = {
   currentCity: CITIES[0],
   cities: CITIES,
   offers: [],
-  localOffers: []
+  localOffers: [],
+  isDataLoaded: false
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -33,5 +35,8 @@ export const reducer = createReducer(initialState, (builder) => {
     .addCase(changeCurrentCity, (state, action) => {
       state.currentCity = action.payload;
       state.localOffers = getOffersInCurrentCity(state.offers, state.currentCity);
+    })
+    .addCase(setDataLoadedStatus, (state, action) => {
+      state.isDataLoaded = action.payload;
     });
 });

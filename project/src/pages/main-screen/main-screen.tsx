@@ -3,12 +3,16 @@ import { changeCurrentCity } from '../../store/action';
 import CityList from '../../components/city-list/city-list';
 import Main from '../../components/main/main';
 import MainEmpty from '../../components/main-empty/main-empty';
+import { Loader } from '../../components/loader/loader';
 
 export default function MainScreen(): JSX.Element {
-  const { currentCity, cities, localOffers } = useAppSelector((state) => state);
+  const { currentCity, cities, localOffers, isDataLoaded } = useAppSelector((state) => state);
 
   const dispatch = useAppDispatch();
   const isEmpty = !localOffers.length;
+  const mainContent = isEmpty
+    ? <MainEmpty city={currentCity} />
+    : <Main offers={localOffers} city={currentCity} />;
 
   return (
     <main className={`page__main page__main--index ${isEmpty ? 'page__main--index-empty' : ''}`}>
@@ -23,9 +27,9 @@ export default function MainScreen(): JSX.Element {
       />
 
       <div className="cities">
-        {isEmpty
-          ? <MainEmpty city={currentCity} />
-          : <Main offers={localOffers} city={currentCity} />}
+        {isDataLoaded
+          ? mainContent
+          : <Loader />}
       </div>
     </main>
   );
