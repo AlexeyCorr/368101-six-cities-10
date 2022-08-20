@@ -5,17 +5,29 @@ import CardList from '../../components/card-list/card-list';
 import Map from '../../components/map/map';
 import { getRatingInPercent } from '../../utils/helpers';
 
-import { offers, offerReviews } from '../../mocks/offers';
+import { useAppSelector } from '../../hooks';
+import { Loader } from '../../components/loader/loader';
+import { store } from '../../store';
+import { fetchCommentsAction, fetchCurrentOfferAction, fetchNearbyOffersAction } from '../../store/api-actions';
+import { useEffect } from 'react';
 
 export default function OfferScreen(): JSX.Element | null {
   const { id } = useParams();
-  const currentOffer = offers.find((offer) => offer.id === Number(id));
+  const { currentOffer, nearby, comments } = useAppSelector((state) => state);
+
+  useEffect(() => {
+    if (id) {
+      Promise.all([
+        store.dispatch(fetchCurrentOfferAction(id)),
+        store.dispatch(fetchNearbyOffersAction(id)),
+        store.dispatch(fetchCommentsAction(id))
+      ]);
+    }
+  }, [id]);
 
   if (!currentOffer) {
-    return null;
+    return <Loader />;
   }
-
-  const localOffers = offers.filter(({city}) => city.name === currentOffer.city.name);
 
   const {
     price,
@@ -129,13 +141,13 @@ export default function OfferScreen(): JSX.Element | null {
               </div>
             </div>
 
-            <Reviews reviews={offerReviews} />
+            <Reviews reviews={comments} />
           </div>
         </div>
 
         <Map
           city={currentOffer.city}
-          offers={localOffers}
+          offers={[...nearby, currentOffer]}
           selectedOffer={currentOffer}
           className="property__map"
         />
@@ -147,7 +159,7 @@ export default function OfferScreen(): JSX.Element | null {
 
           <CardList
             className="near-places__list"
-            offers={localOffers}
+            offers={nearby}
             cardType={'recommend'}
           />
         </section>

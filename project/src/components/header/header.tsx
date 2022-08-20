@@ -1,11 +1,10 @@
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/api-actions';
-import { AppRoute, AuthorizationStatus } from '../../utils/const';
+import { AppRoute } from '../../utils/const';
 
 export default function Header(): JSX.Element {
-  const { authorizationStatus, userData } = useAppSelector((state) => state);
-  const isAuth = authorizationStatus === AuthorizationStatus.Auth;
+  const { isAuth, userData } = useAppSelector((state) => state);
 
   const dispatch = useAppDispatch();
 
