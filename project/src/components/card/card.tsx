@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Offer, ClassNameCard } from '../../types/offer';
-import { ClassNameCardType } from '../../utils/const';
+import { AppRoute, ClassNameCardType } from '../../utils/const';
 import { getRatingInPercent } from '../../utils/helpers';
 
 type CardPros = {
@@ -36,7 +36,7 @@ export default function Card(props: CardPros): JSX.Element {
       }
 
       <div className={`${ClassNameCardType[cardType].image} place-card__image-wrapper`}>
-        <Link to={`/offer/${id}`}>
+        <Link to={`${AppRoute.Offer}/${id}`}>
           <img
             className="place-card__image"
             src={previewImage}
@@ -66,7 +66,7 @@ export default function Card(props: CardPros): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${id}`}>{title}</Link>
+          <Link to={`${AppRoute.Offer}/${id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

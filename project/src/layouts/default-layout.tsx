@@ -5,9 +5,11 @@ import Footer from '../components/footer/footer';
 
 export default function DetaultLayout(): JSX.Element {
   const { pathname } = useLocation();
+  const mainClass = pathname === '/' ? 'page--main' : '';
+  const loginClass = pathname === '/login' ? 'page--gray page--login' : '';
 
   return (
-    <div className={`page ${pathname === '/' ? 'page--main' : ''}`}>
+    <div className={`page ${mainClass} ${loginClass}`}>
       <Header />
 
       <Outlet />

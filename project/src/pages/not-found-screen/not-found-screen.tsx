@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { AppRoute } from '../../utils/const';
 
 export default function NotFoundScreen(): JSX.Element {
   return (
@@ -16,7 +17,7 @@ export default function NotFoundScreen(): JSX.Element {
         style={{
           marginTop: '20px'
         }}
-        to="/"
+        to={AppRoute.Root}
       >
         Вернуться на главную
       </Link>

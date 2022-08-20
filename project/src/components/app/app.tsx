@@ -1,5 +1,5 @@
-import { Route, BrowserRouter, Routes } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../utils/const';
+import { Route, Routes } from 'react-router-dom';
+import { AppRoute } from '../../utils/const';
 
 import DefaultLayout from '../../layouts/default-layout';
 import MainScreen from '../../pages/main-screen/main-screen';
@@ -9,12 +9,14 @@ import LoginScreen from '../../pages/login-screen/login-screen';
 import OfferScreen from '../../pages/offer-screen/offer-screen';
 import ScrollToTop from '../scroll-to-top/scroll-to-top';
 import PrivateRoute from '../private-route/private-route';
+import HistoryRouter from '../history-route/history-route';
 
 import { favorites } from './../../mocks/favorites';
+import browserHistory from '../../browser-history';
 
 function App(): JSX.Element {
   return (
-    <BrowserRouter>
+    <HistoryRouter history={browserHistory}>
       <ScrollToTop />
 
       <Routes>
@@ -28,15 +30,13 @@ function App(): JSX.Element {
             element={<LoginScreen />}
           />
           <Route
-            path={AppRoute.Offer}
+            path={AppRoute.CurrentOffer}
             element={<OfferScreen />}
           />
           <Route
             path={AppRoute.Favorites}
             element={
-              <PrivateRoute
-                authorizationStatus={AuthorizationStatus.Auth}
-              >
+              <PrivateRoute>
                 <FavoritesScreen favorites={favorites} />
               </PrivateRoute>
             }
@@ -47,7 +47,7 @@ function App(): JSX.Element {
           />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 }
 

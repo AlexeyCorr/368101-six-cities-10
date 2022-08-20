@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
+import { AppRoute } from '../../utils/const';
 
 export default function Footer(): JSX.Element {
   return (
     <footer className="footer container">
       <Link
         className="footer__logo-link"
-        to="/"
+        to={AppRoute.Root}
       >
         <img
           className="footer__logo"
