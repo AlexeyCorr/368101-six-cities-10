@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { AppDispatch, State } from '../types/state';
-import { Offer, OfferReviews, Offers } from '../types/offer';
+import { Offer, OfferReviews, Offers, Comment } from '../types/offer';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
 
@@ -80,6 +80,21 @@ export const fetchCommentsAction = createAsyncThunk<void, string, {
   },
 );
 
+export const setCommentAction = createAsyncThunk<void, { hotelId: string, comment: Comment }, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'data/setComment',
+  async ({ hotelId, comment }, {dispatch, extra: api}) => {
+    dispatch(setDataLoadedStatus(false));
+
+    const { data } = await api.post<OfferReviews>(`${APIRoute.Comments}/${hotelId}`, comment);
+    dispatch(loadComments(data));
+    dispatch(setDataLoadedStatus(true));
+  },
+);
+
 export const fetchFavoriteOffersAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch,
   state: State,
@@ -106,6 +121,7 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
       const { data } = await api.get(APIRoute.Login);
       dispatch(setUserData(data));
       dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      dispatch(fetchFavoriteOffersAction());
     } catch {
       dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
     }
@@ -123,6 +139,7 @@ export const loginAction = createAsyncThunk<void, AuthData, {
     saveToken(data.token);
     dispatch(setUserData(data));
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
+    dispatch(fetchFavoriteOffersAction());
     dispatch(redirectToRoute(AppRoute.Root));
   },
 );

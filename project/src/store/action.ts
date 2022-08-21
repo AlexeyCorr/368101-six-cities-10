@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { City, Offer, OfferReviews, Offers } from '../types/offer';
+import { City, Offer, OfferReviews, Offers, Comment } from '../types/offer';
 import { UserData } from '../types/user-data';
 import { AppRoute, AuthorizationStatus } from '../utils/const';
 
@@ -14,6 +14,8 @@ export const loadNearbyOffers = createAction<Offers>('data/loadNearbyOffers');
 export const loadFavoriteOffers = createAction<Offers>('data/loadFavoriteOffers');
 
 export const loadComments = createAction<OfferReviews>('data/loadComments');
+
+export const setComment = createAction<Comment>('data/setComment');
 
 export const setDataLoadedStatus = createAction<boolean>('data/setDataLoadedStatus');
 

@@ -1,24 +1,44 @@
 import { Fragment, ChangeEvent, useState } from 'react';
+import { useAppDispatch } from '../../hooks';
+import { setCommentAction } from '../../store/api-actions';
 
-export default function ReviewsForm(): JSX.Element {
+const MIN_LENGTH_COMMENT = 50;
+
+const ratings = [
+  { count: 5, title: 'perfect' },
+  { count: 4, title: 'good' },
+  { count: 3, title: 'not bad' },
+  { count: 2, title: 'badly' },
+  { count: 1, title: 'terribly' }
+];
+
+type ReviewsFormProps = {
+  hotelId: string,
+}
+
+export default function ReviewsForm({ hotelId }: ReviewsFormProps): JSX.Element {
   const [review, setReview] = useState('');
-  const [rating, setRating] = useState('0');
+  const [rating, setRating] = useState(0);
 
-  const ratings = [
-    { count: '5', title: 'perfect' },
-    { count: '4', title: 'good' },
-    { count: '3', title: 'not bad' },
-    { count: '2', title: 'badly' },
-    { count: '1', title: 'terribly' }
-  ];
+  const dispatch = useAppDispatch();
 
   return (
-    <form className="reviews__form form" action="#" method="post">
+    <form
+      className="reviews__form form"
+      action="#"
+      method="post"
+      onSubmit={(evt) => {
+        evt.preventDefault();
+        dispatch(setCommentAction({ hotelId, comment: { comment: review, rating }}));
+        setReview('');
+        setRating(0);
+      }}
+    >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div
         className="reviews__rating-form form__rating"
         onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-          setRating(evt.target.value);
+          setRating(Number(evt.target.value));
         }}
       >
         {ratings.map(({count, title}) => (
@@ -50,6 +70,7 @@ export default function ReviewsForm(): JSX.Element {
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
         defaultValue={review}
+        minLength={MIN_LENGTH_COMMENT}
         onInput={(evt: ChangeEvent<HTMLTextAreaElement>) => {
           setReview(evt.target.value);
         }}
@@ -66,7 +87,7 @@ export default function ReviewsForm(): JSX.Element {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled
+          disabled={(review.length < MIN_LENGTH_COMMENT) || !rating}
         >
           Submit
         </button>

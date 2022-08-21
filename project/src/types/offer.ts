@@ -45,6 +45,11 @@ export type Offers = Offer[];
 
 export type ClassNameCard = keyof typeof ClassNameCardType;
 
+export type Comment = {
+  comment: string
+  rating: number
+}
+
 export type OfferReview = {
   comment: string;
   date: string;

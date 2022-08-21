@@ -4,7 +4,7 @@ import { logoutAction } from '../../store/api-actions';
 import { AppRoute } from '../../utils/const';
 
 export default function Header(): JSX.Element {
-  const { isAuth, userData } = useAppSelector((state) => state);
+  const { isAuth, userData, favorites } = useAppSelector((state) => state);
 
   const dispatch = useAppDispatch();
 
@@ -43,7 +43,7 @@ export default function Header(): JSX.Element {
                         </span>
 
                         <span className="header__favorite-count">
-                          3
+                          {favorites.length}
                         </span>
                       </Link>
                     </li>

@@ -4,10 +4,11 @@ import { OfferReviews } from '../../types/offer';
 import { useAppSelector } from '../../hooks';
 
 type ReviewsProps = {
+  hotelId: string,
   reviews: OfferReviews;
 }
 
-export default function Reviews({ reviews }: ReviewsProps): JSX.Element {
+export default function Reviews({ hotelId, reviews }: ReviewsProps): JSX.Element {
   const { isAuth } = useAppSelector((state) => state);
 
   return (
@@ -18,7 +19,7 @@ export default function Reviews({ reviews }: ReviewsProps): JSX.Element {
 
       <ReviewList reviews={reviews} />
 
-      {isAuth && <ReviewsForm />}
+      {isAuth && <ReviewsForm hotelId={hotelId} />}
     </section>
   );
 }

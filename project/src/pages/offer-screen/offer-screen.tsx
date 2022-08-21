@@ -9,11 +9,13 @@ import { useAppSelector } from '../../hooks';
 import { Loader } from '../../components/loader/loader';
 import { store } from '../../store';
 import { fetchCommentsAction, fetchCurrentOfferAction, fetchNearbyOffersAction } from '../../store/api-actions';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { Offer } from '../../types/offer';
 
 export default function OfferScreen(): JSX.Element | null {
   const { id } = useParams();
-  const { currentOffer, nearby, comments } = useAppSelector((state) => state);
+  const { currentOffer, nearby, comments, currentCity } = useAppSelector((state) => state);
+  const [ selectedOffer, setSelectedOffer ] = useState<Offer | undefined>(currentOffer);
 
   useEffect(() => {
     if (id) {
@@ -25,7 +27,7 @@ export default function OfferScreen(): JSX.Element | null {
     }
   }, [id]);
 
-  if (!currentOffer) {
+  if (!id || !currentOffer) {
     return <Loader />;
   }
 
@@ -44,12 +46,14 @@ export default function OfferScreen(): JSX.Element | null {
     description
   } = currentOffer;
 
+  const nearbyOffers = [...nearby, currentOffer];
+
   return (
     <main className="page__main page__main--property">
       <section className="property">
         <div className="property__gallery-container container">
           <div className="property__gallery">
-            {images.slice(0, 6).map((src: string, i): JSX.Element => (
+            {images.slice(0, 6).map((src: string): JSX.Element => (
               <div
                 key={`${src}-${id}`}
                 className="property__image-wrapper"
@@ -141,14 +145,14 @@ export default function OfferScreen(): JSX.Element | null {
               </div>
             </div>
 
-            <Reviews reviews={comments} />
+            <Reviews hotelId={id} reviews={comments} />
           </div>
         </div>
 
         <Map
-          city={currentOffer.city}
-          offers={[...nearby, currentOffer]}
-          selectedOffer={currentOffer}
+          city={currentCity}
+          offers={nearbyOffers}
+          selectedOffer={selectedOffer}
           className="property__map"
         />
       </section>
@@ -161,6 +165,8 @@ export default function OfferScreen(): JSX.Element | null {
             className="near-places__list"
             offers={nearby}
             cardType={'recommend'}
+            onMouseEnterCardHandler={(offer) => setSelectedOffer(offer)}
+            onMouseLeaveCardHandler={() => setSelectedOffer(currentOffer)}
           />
         </section>
       </div>

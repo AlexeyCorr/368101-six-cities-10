@@ -6,7 +6,7 @@ import { AuthorizationStatus, CITIES } from '../utils/const';
 import { UserData } from '../types/user-data';
 
 type InitalState = {
-  currentOffer: Offer | null;
+  currentOffer: Offer | undefined;
   currentCity: City;
   cities: City[];
   offers: Offers;
@@ -21,7 +21,7 @@ type InitalState = {
 }
 
 const initialState: InitalState = {
-  currentOffer: null,
+  currentOffer: undefined,
   currentCity: CITIES[0],
   cities: CITIES,
   favorites: [],
