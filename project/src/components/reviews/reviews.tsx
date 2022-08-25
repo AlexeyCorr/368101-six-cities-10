@@ -2,6 +2,7 @@ import ReviewsForm from '../reviews-form/reviews-form';
 import ReviewList from '../review-list/review-list';
 import { OfferReviews } from '../../types/offer';
 import { useAppSelector } from '../../hooks';
+import { getIsAuth } from '../../store/user-process/selectors';
 
 type ReviewsProps = {
   hotelId: string,
@@ -9,7 +10,7 @@ type ReviewsProps = {
 }
 
 export default function Reviews({ hotelId, reviews }: ReviewsProps): JSX.Element {
-  const { isAuth } = useAppSelector((state) => state);
+  const isAuth = useAppSelector(getIsAuth);
 
   return (
     <section className="property__reviews reviews">

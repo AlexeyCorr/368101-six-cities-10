@@ -11,10 +11,16 @@ import { store } from '../../store';
 import { fetchCommentsAction, fetchCurrentOfferAction, fetchNearbyOffersAction } from '../../store/api-actions';
 import { useEffect, useState } from 'react';
 import { Offer } from '../../types/offer';
+import { getComments, getCurrentCity, getCurrentOffer, getNearby } from '../../store/offer-data/selectors';
 
 export default function OfferScreen(): JSX.Element | null {
   const { id } = useParams();
-  const { currentOffer, nearby, comments, currentCity } = useAppSelector((state) => state);
+
+  const nearby = useAppSelector(getNearby);
+  const currentOffer = useAppSelector(getCurrentOffer);
+  const comments = useAppSelector(getComments);
+  const currentCity = useAppSelector(getCurrentCity);
+
   const [ selectedOffer, setSelectedOffer ] = useState<Offer | undefined>(currentOffer);
 
   useEffect(() => {

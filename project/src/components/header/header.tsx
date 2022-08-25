@@ -1,10 +1,14 @@
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/api-actions';
+import { getFavorites } from '../../store/offer-data/selectors';
+import { getIsAuth, getUserData } from '../../store/user-process/selectors';
 import { AppRoute } from '../../utils/const';
 
 export default function Header(): JSX.Element {
-  const { isAuth, userData, favorites } = useAppSelector((state) => state);
+  const isAuth = useAppSelector(getIsAuth);
+  const userData = useAppSelector(getUserData);
+  const favorites = useAppSelector(getFavorites);
 
   const dispatch = useAppDispatch();
 
@@ -29,7 +33,7 @@ export default function Header(): JSX.Element {
                     <li className="header__nav-item user">
                       <Link
                         className="header__nav-link header__nav-link--profile"
-                        to={AppRoute.Favorites}
+                        to={favorites.length ? AppRoute.Favorites : '#'}
                       >
                         <div
                           className="header__avatar-wrapper user__avatar-wrapper"

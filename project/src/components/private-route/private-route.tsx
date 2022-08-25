@@ -1,5 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
+import { getIsAuth } from '../../store/user-process/selectors';
 import { AppRoute } from '../../utils/const';
 
 type PrivateRouteProps = {
@@ -8,7 +9,7 @@ type PrivateRouteProps = {
 
 export default function PrivateRoute(props: PrivateRouteProps): JSX.Element {
   const { children } = props;
-  const { isAuth } = useAppSelector((state) => state);
+  const isAuth = useAppSelector(getIsAuth);
 
   return (
     isAuth

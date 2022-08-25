@@ -129,3 +129,9 @@ export const SORTS: Sort[] = [
     name: 'Top rated first'
   }
 ];
+
+export enum NameSpace {
+  Data = 'DATA',
+  App = 'APP',
+  User = 'USER',
+}

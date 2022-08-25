@@ -1,6 +1,6 @@
 import { Fragment, ChangeEvent, useState } from 'react';
 import { useAppDispatch } from '../../hooks';
-import { setCommentAction } from '../../store/api-actions';
+import { sendCommentAction } from '../../store/api-actions';
 
 const MIN_LENGTH_COMMENT = 50;
 
@@ -29,7 +29,7 @@ export default function ReviewsForm({ hotelId }: ReviewsFormProps): JSX.Element 
       method="post"
       onSubmit={(evt) => {
         evt.preventDefault();
-        dispatch(setCommentAction({ hotelId, comment: { comment: review, rating }}));
+        dispatch(sendCommentAction({ hotelId, comment: { comment: review, rating }}));
         setReview('');
         setRating(0);
       }}
