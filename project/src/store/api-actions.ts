@@ -58,7 +58,7 @@ export const fetchCommentsAction = createAsyncThunk<OfferReviews, string, {
   },
 );
 
-export const sendCommentAction = createAsyncThunk<OfferReviews, { hotelId: string, comment: Comment }, {
+export const sendCommentAction = createAsyncThunk<OfferReviews, { hotelId: number, comment: Comment }, {
   state: State,
   extra: AxiosInstance
 }>(
@@ -77,6 +77,18 @@ export const fetchFavoriteOffersAction = createAsyncThunk<Offers, undefined, {
   'data/fetchFavoriteOffers',
   async (_arg, { extra: api }) => {
     const { data } = await api.get<Offers>(APIRoute.Favorite);
+
+    return data;
+  },
+);
+
+export const changeFavoriteOfferAction = createAsyncThunk<Offer, { hotelId: number, status: number }, {
+  state: State,
+  extra: AxiosInstance
+}>(
+  'data/changeFavoriteOffer',
+  async ({ hotelId, status }, { extra: api }) => {
+    const { data } = await api.post<Offer>(`${APIRoute.Favorite}/${hotelId}/${status}`);
 
     return data;
   },

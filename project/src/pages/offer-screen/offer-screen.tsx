@@ -151,7 +151,7 @@ export default function OfferScreen(): JSX.Element | null {
               </div>
             </div>
 
-            <Reviews hotelId={id} reviews={comments} />
+            <Reviews hotelId={Number(id)} reviews={comments} />
           </div>
         </div>
 
@@ -171,8 +171,8 @@ export default function OfferScreen(): JSX.Element | null {
             className="near-places__list"
             offers={nearby}
             cardType={'recommend'}
-            onMouseEnterCardHandler={(offer) => setSelectedOffer(offer)}
-            onMouseLeaveCardHandler={() => setSelectedOffer(currentOffer)}
+            onMouseEnterCard={(offer) => setSelectedOffer(offer)}
+            onMouseLeaveCard={() => setSelectedOffer(currentOffer)}
           />
         </section>
       </div>

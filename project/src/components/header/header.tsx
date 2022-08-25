@@ -33,7 +33,7 @@ export default function Header(): JSX.Element {
                     <li className="header__nav-item user">
                       <Link
                         className="header__nav-link header__nav-link--profile"
-                        to={favorites.length ? AppRoute.Favorites : '#'}
+                        to={AppRoute.Favorites}
                       >
                         <div
                           className="header__avatar-wrapper user__avatar-wrapper"

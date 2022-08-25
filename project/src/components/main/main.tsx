@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import CardList from '../../components/card-list/card-list';
 import Map from '../../components/map/map';
 import Sorts from '../sorts/sorts';
@@ -15,6 +15,9 @@ export default function Main({ offers, city }: MainProps): JSX.Element {
   const [currentSort, setCurrentSort] = useState(SORTS[0]);
   const [sortedOffers, setSortedOffers] = useState(offers);
   const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(undefined);
+
+  const onMouseEnterCard = useCallback((offer: Offer) => setSelectedOffer(offer), []);
+  const onMouseLeaveCard = useCallback(() => setSelectedOffer(undefined), []);
 
   useEffect(() => {
     setSortedOffers(getSortedOffers(currentSort, offers));
@@ -34,15 +37,15 @@ export default function Main({ offers, city }: MainProps): JSX.Element {
         <Sorts
           sorts={SORTS}
           currentSort={currentSort}
-          onClickSortHandler={setCurrentSort}
+          onClickSort={setCurrentSort}
         />
 
         <CardList
           className="cities__places-list places__list tabs__content"
           offers={sortedOffers}
           cardType={'main'}
-          onMouseEnterCardHandler={(offer) => setSelectedOffer(offer)}
-          onMouseLeaveCardHandler={() => setSelectedOffer(undefined)}
+          onMouseEnterCard={onMouseEnterCard}
+          onMouseLeaveCard={onMouseLeaveCard}
         />
       </section>
 

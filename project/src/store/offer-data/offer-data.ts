@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { CITIES, NameSpace } from '../../utils/const';
 import { OfferData } from '../../types/state';
-import { fetchCommentsAction, fetchCurrentOfferAction, fetchFavoriteOffersAction, fetchNearbyOffersAction, fetchOffersAction, sendCommentAction } from '../api-actions';
+import { changeFavoriteOfferAction, fetchCommentsAction, fetchCurrentOfferAction, fetchFavoriteOffersAction, fetchNearbyOffersAction, fetchOffersAction, sendCommentAction } from '../api-actions';
 import { getOffersInCurrentCity } from '../../utils/helpers';
 
 const initialState: OfferData = {
@@ -69,6 +69,16 @@ export const offerData = createSlice({
       .addCase(fetchFavoriteOffersAction.fulfilled, (state, action) => {
         state.favorites = action.payload;
         state.isDataLoaded = true;
+      })
+      .addCase(changeFavoriteOfferAction.fulfilled, (state, action) => {
+        const index = state.localOffers.findIndex((item) => item.id === action.payload.id);
+
+        state.localOffers = [
+          ...state.localOffers.slice(0, index),
+          action.payload,
+          ...state.localOffers.slice(index + 1)
+        ];
+        state.favorites.push(action.payload);
       });
   }
 });

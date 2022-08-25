@@ -16,29 +16,29 @@ export const userProcess = createSlice({
   extraReducers(builder) {
     builder
       .addCase(checkAuthAction.fulfilled, (state, action) => {
+        state.isAuth = true;
         state.authorizationStatus = AuthorizationStatus.Auth;
         state.userData = action.payload;
-        state.isAuth = true;
       })
       .addCase(checkAuthAction.rejected, (state) => {
+        state.isAuth = false;
         state.authorizationStatus = AuthorizationStatus.NoAuth;
         state.userData = null;
-        state.isAuth = false;
       })
       .addCase(loginAction.fulfilled, (state, action) => {
+        state.isAuth = true;
         state.authorizationStatus = AuthorizationStatus.Auth;
         state.userData = action.payload;
-        state.isAuth = true;
       })
       .addCase(loginAction.rejected, (state) => {
+        state.isAuth = false;
         state.authorizationStatus = AuthorizationStatus.NoAuth;
         state.userData = null;
-        state.isAuth = false;
       })
       .addCase(logoutAction.fulfilled, (state) => {
+        state.isAuth = false;
         state.authorizationStatus = AuthorizationStatus.NoAuth;
         state.userData = null;
-        state.isAuth = false;
       });
   }
 });

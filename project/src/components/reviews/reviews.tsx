@@ -5,7 +5,7 @@ import { useAppSelector } from '../../hooks';
 import { getIsAuth } from '../../store/user-process/selectors';
 
 type ReviewsProps = {
-  hotelId: string,
+  hotelId: number,
   reviews: OfferReviews;
 }
 

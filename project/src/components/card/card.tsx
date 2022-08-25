@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks';
+import { changeFavoriteOfferAction } from '../../store/api-actions';
 import { Offer, ClassNameCard } from '../../types/offer';
 import { AppRoute, ClassNameCardType } from '../../utils/const';
 import { getRatingInPercent } from '../../utils/helpers';
@@ -6,12 +8,12 @@ import { getRatingInPercent } from '../../utils/helpers';
 type CardPros = {
   offer: Offer;
   cardType: ClassNameCard;
-  onMouseEnterCardHandler: () => void;
-  onMouseLeaveCardHandler: () => void;
+  onMouseEnterCard: () => void;
+  onMouseLeaveCard: () => void;
 }
 
 export default function Card(props: CardPros): JSX.Element {
-  const { offer, cardType, onMouseEnterCardHandler, onMouseLeaveCardHandler } = props;
+  const { offer, cardType, onMouseEnterCard, onMouseLeaveCard } = props;
   const {
     id,
     price,
@@ -23,11 +25,13 @@ export default function Card(props: CardPros): JSX.Element {
     previewImage
   } = offer;
 
+  const dispatch = useAppDispatch();
+
   return (
     <article
       className={`${ClassNameCardType[cardType].card} place-card`}
-      onMouseEnter={onMouseEnterCardHandler}
-      onMouseLeave={onMouseLeaveCardHandler}
+      onMouseEnter={onMouseEnterCard}
+      onMouseLeave={onMouseLeaveCard}
     >
       {
         isPremium
@@ -52,7 +56,11 @@ export default function Card(props: CardPros): JSX.Element {
             <b className="place-card__price-value">€{price}</b>
             <span className="place-card__price-text">/&nbsp;night</span>
           </div>
-          <button className={`place-card__bookmark-button ${isFavorite ? 'place-card__bookmark-button--active' : ''} button`} type="button">
+          <button
+            className={`place-card__bookmark-button ${isFavorite ? 'place-card__bookmark-button--active' : ''} button`}
+            type="button"
+            onClick={() => dispatch(changeFavoriteOfferAction({ hotelId: id, status: isFavorite ? 0 : 1 }))}
+          >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use href="#icon-bookmark" />
             </svg>

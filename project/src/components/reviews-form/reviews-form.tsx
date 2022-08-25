@@ -13,7 +13,7 @@ const ratings = [
 ];
 
 type ReviewsFormProps = {
-  hotelId: string,
+  hotelId: number,
 }
 
 export default function ReviewsForm({ hotelId }: ReviewsFormProps): JSX.Element {
