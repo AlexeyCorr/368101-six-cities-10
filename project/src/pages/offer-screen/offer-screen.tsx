@@ -19,7 +19,7 @@ import { getIsAuth } from '../../store/user-process/selectors';
 export default function OfferScreen(): JSX.Element | null {
   const { id } = useParams();
 
-  async function fetchData(hotelId: string) {
+  async function fetchData(hotelId: number) {
     await Promise.all([
       store.dispatch(fetchCurrentOfferAction(hotelId)),
       store.dispatch(fetchNearbyOffersAction(hotelId)),
@@ -29,7 +29,7 @@ export default function OfferScreen(): JSX.Element | null {
 
   useEffect(() => {
     if (id) {
-      fetchData(id);
+      fetchData(Number(id));
     }
   }, [id]);
 
@@ -42,7 +42,6 @@ export default function OfferScreen(): JSX.Element | null {
   const currentCity = useAppSelector(getCurrentCity);
 
   const [ selectedOffer, setSelectedOffer ] = useState<Offer | undefined>(currentOffer);
-  const [ isLocalFavorite, setLocalFavorite ] = useState(currentOffer?.isFavorite);
 
   if (!id || !currentOffer) {
     return <Loader />;
@@ -54,6 +53,7 @@ export default function OfferScreen(): JSX.Element | null {
     rating,
     type,
     images,
+    isFavorite,
     isPremium,
     bedrooms,
     maxAdults,
@@ -64,10 +64,11 @@ export default function OfferScreen(): JSX.Element | null {
 
   const nearbyOffers = [...nearby, currentOffer];
 
-  const setFavorite = () => {
-    dispatch(changeFavoriteOfferAction({ hotelId: Number(id), status: isLocalFavorite ? 0 : 1 }));
-    setLocalFavorite(!isLocalFavorite);
+  const setFavorite = async () => {
+    await dispatch(changeFavoriteOfferAction({ hotelId: Number(id), status: isFavorite ? 0 : 1 }));
+    dispatch(fetchCurrentOfferAction(Number(id)));
   };
+
   const redirectToLigon = () => dispatch(redirectToRoute(AppRoute.Login));
   const onCardClick = isAuth ? setFavorite : redirectToLigon;
 
@@ -113,7 +114,7 @@ export default function OfferScreen(): JSX.Element | null {
                   className="property__bookmark-icon place-card__bookmark-icon"
                   width={31}
                   height={33}
-                  style={isLocalFavorite ? { stroke: '#4481DC', fill: '#4481c3' } : {}}
+                  style={isFavorite ? { stroke: '#4481DC', fill: '#4481c3' } : {}}
                 >
                   <use xlinkHref="#icon-bookmark" />
                 </svg>

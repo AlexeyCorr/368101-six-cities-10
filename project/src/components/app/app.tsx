@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import { AppRoute } from '../../utils/const';
 
 import { useAppSelector } from '../../hooks';
-import { getIsAuth } from '../../store/user-process/selectors';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import DefaultLayout from '../../layouts/default-layout';
 import MainScreen from '../../pages/main-screen/main-screen';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
@@ -16,7 +16,7 @@ import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
 
 function App(): JSX.Element {
-  const isAuth = useAppSelector(getIsAuth);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   return (
     <HistoryRouter history={browserHistory}>
@@ -39,7 +39,7 @@ function App(): JSX.Element {
           <Route
             path={AppRoute.Favorites}
             element={
-              <PrivateRoute isAuth={isAuth}>
+              <PrivateRoute authorizationStatus={authorizationStatus}>
                 <FavoritesScreen />
               </PrivateRoute>
             }
