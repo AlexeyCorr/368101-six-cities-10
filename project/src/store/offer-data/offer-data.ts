@@ -2,12 +2,10 @@ import { createSlice } from '@reduxjs/toolkit';
 import { CITIES, NameSpace } from '../../utils/const';
 import { OfferData } from '../../types/state';
 import { changeFavoriteOfferAction, fetchCommentsAction, fetchCurrentOfferAction, fetchFavoriteOffersAction, fetchNearbyOffersAction, fetchOffersAction, sendCommentAction } from '../api-actions';
-import { getOffersInCurrentCity } from '../../utils/helpers';
 
 const initialState: OfferData = {
   offers: [],
   currentOffer: undefined,
-  localOffers: [],
   cities: CITIES,
   currentCity: CITIES[0],
   favorites: [],
@@ -22,7 +20,6 @@ export const offerData = createSlice({
   reducers: {
     changeCurrentCity: (state, action) => {
       state.currentCity = action.payload;
-      state.localOffers = getOffersInCurrentCity(state.offers, state.currentCity);
     }
   },
   extraReducers(builder) {
@@ -32,7 +29,6 @@ export const offerData = createSlice({
       })
       .addCase(fetchOffersAction.fulfilled, (state, action) => {
         state.offers = action.payload;
-        state.localOffers = getOffersInCurrentCity(state.offers, state.currentCity);
         state.isDataLoaded = true;
       })
       .addCase(fetchCurrentOfferAction.pending, (state) => {
@@ -71,14 +67,14 @@ export const offerData = createSlice({
         state.isDataLoaded = true;
       })
       .addCase(changeFavoriteOfferAction.fulfilled, (state, action) => {
-        const index = state.localOffers.findIndex((item) => item.id === action.payload.id);
+        const index = state.offers.findIndex((item) => item.id === action.payload.id);
 
-        state.localOffers = [
-          ...state.localOffers.slice(0, index),
+        state.offers = [
+          ...state.offers.slice(0, index),
           action.payload,
-          ...state.localOffers.slice(index + 1)
+          ...state.offers.slice(index + 1)
         ];
-        state.favorites.push(action.payload);
+        state.favorites = state.offers.filter((offer) => offer.isFavorite);
       });
   }
 });

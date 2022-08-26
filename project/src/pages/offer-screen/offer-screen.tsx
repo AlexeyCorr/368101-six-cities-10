@@ -5,33 +5,44 @@ import CardList from '../../components/card-list/card-list';
 import Map from '../../components/map/map';
 import { getRatingInPercent } from '../../utils/helpers';
 
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { Loader } from '../../components/loader/loader';
 import { store } from '../../store';
-import { fetchCommentsAction, fetchCurrentOfferAction, fetchNearbyOffersAction } from '../../store/api-actions';
+import { changeFavoriteOfferAction, fetchCommentsAction, fetchCurrentOfferAction, fetchNearbyOffersAction } from '../../store/api-actions';
 import { useEffect, useState } from 'react';
 import { Offer } from '../../types/offer';
 import { getComments, getCurrentCity, getCurrentOffer, getNearby } from '../../store/offer-data/selectors';
+import { redirectToRoute } from '../../store/action';
+import { AppRoute } from '../../utils/const';
+import { getIsAuth } from '../../store/user-process/selectors';
 
 export default function OfferScreen(): JSX.Element | null {
   const { id } = useParams();
 
-  const nearby = useAppSelector(getNearby);
+  async function fetchData(hotelId: string) {
+    await Promise.all([
+      store.dispatch(fetchCurrentOfferAction(hotelId)),
+      store.dispatch(fetchNearbyOffersAction(hotelId)),
+      store.dispatch(fetchCommentsAction(hotelId))
+    ]);
+  }
+
+  useEffect(() => {
+    if (id) {
+      fetchData(id);
+    }
+  }, [id]);
+
+  const dispatch = useAppDispatch();
+
   const currentOffer = useAppSelector(getCurrentOffer);
+  const isAuth = useAppSelector(getIsAuth);
+  const nearby = useAppSelector(getNearby);
   const comments = useAppSelector(getComments);
   const currentCity = useAppSelector(getCurrentCity);
 
   const [ selectedOffer, setSelectedOffer ] = useState<Offer | undefined>(currentOffer);
-
-  useEffect(() => {
-    if (id) {
-      Promise.all([
-        store.dispatch(fetchCurrentOfferAction(id)),
-        store.dispatch(fetchNearbyOffersAction(id)),
-        store.dispatch(fetchCommentsAction(id))
-      ]);
-    }
-  }, [id]);
+  const [ isLocalFavorite, setLocalFavorite ] = useState(currentOffer?.isFavorite);
 
   if (!id || !currentOffer) {
     return <Loader />;
@@ -44,7 +55,6 @@ export default function OfferScreen(): JSX.Element | null {
     type,
     images,
     isPremium,
-    isFavorite,
     bedrooms,
     maxAdults,
     goods,
@@ -53,6 +63,13 @@ export default function OfferScreen(): JSX.Element | null {
   } = currentOffer;
 
   const nearbyOffers = [...nearby, currentOffer];
+
+  const setFavorite = () => {
+    dispatch(changeFavoriteOfferAction({ hotelId: Number(id), status: isLocalFavorite ? 0 : 1 }));
+    setLocalFavorite(!isLocalFavorite);
+  };
+  const redirectToLigon = () => dispatch(redirectToRoute(AppRoute.Login));
+  const onCardClick = isAuth ? setFavorite : redirectToLigon;
 
   return (
     <main className="page__main page__main--property">
@@ -87,8 +104,17 @@ export default function OfferScreen(): JSX.Element | null {
                 {title}
               </h1>
 
-              <button className={`${isFavorite ? 'property__bookmark-button--active' : ''} property__bookmark-button button`} type="button">
-                <svg className="property__bookmark-icon" width={31} height={33}>
+              <button
+                className="property__bookmark-button button"
+                type="button"
+                onClick={onCardClick}
+              >
+                <svg
+                  className="property__bookmark-icon place-card__bookmark-icon"
+                  width={31}
+                  height={33}
+                  style={isLocalFavorite ? { stroke: '#4481DC', fill: '#4481c3' } : {}}
+                >
                   <use xlinkHref="#icon-bookmark" />
                 </svg>
                 <span className="visually-hidden">To bookmarks</span>

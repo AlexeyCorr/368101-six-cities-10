@@ -1,4 +1,4 @@
-import { Fragment, ChangeEvent, useState } from 'react';
+import { Fragment, ChangeEvent, useState, FormEvent } from 'react';
 import { useAppDispatch } from '../../hooks';
 import { sendCommentAction } from '../../store/api-actions';
 
@@ -17,39 +17,46 @@ type ReviewsFormProps = {
 }
 
 export default function ReviewsForm({ hotelId }: ReviewsFormProps): JSX.Element {
-  const [review, setReview] = useState('');
-  const [rating, setRating] = useState(0);
+  const [ review, setReview ] = useState('');
+  const [ rating, setRating ] = useState(0);
 
   const dispatch = useAppDispatch();
+
+  const onRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    setRating(Number(evt.target.value));
+  };
+
+  const onReviewInput = (evt: ChangeEvent<HTMLTextAreaElement>) => {
+    setReview(evt.target.value);
+  };
+
+  const onReviewSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+
+    dispatch(sendCommentAction({ hotelId, comment: { comment: review, rating }}));
+    setReview('');
+    setRating(0);
+  };
 
   return (
     <form
       className="reviews__form form"
       action="#"
       method="post"
-      onSubmit={(evt) => {
-        evt.preventDefault();
-        dispatch(sendCommentAction({ hotelId, comment: { comment: review, rating }}));
-        setReview('');
-        setRating(0);
-      }}
+      onSubmit={onReviewSubmit}
     >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
-      <div
-        className="reviews__rating-form form__rating"
-        onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-          setRating(Number(evt.target.value));
-        }}
-      >
+      <div className="reviews__rating-form form__rating">
         {ratings.map(({count, title}) => (
           <Fragment key={count}>
             <input
               className="form__rating-input visually-hidden"
               name="rating"
-              defaultValue={count}
+              value={count}
               id={`${count}-stars`}
               type="radio"
-              defaultChecked={count === rating}
+              checked={count === rating}
+              onChange={onRatingChange}
             />
             <label
               htmlFor={`${count}-stars`}
@@ -69,11 +76,9 @@ export default function ReviewsForm({ hotelId }: ReviewsFormProps): JSX.Element 
         id="review"
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
-        defaultValue={review}
+        value={review}
         minLength={MIN_LENGTH_COMMENT}
-        onInput={(evt: ChangeEvent<HTMLTextAreaElement>) => {
-          setReview(evt.target.value);
-        }}
+        onInput={onReviewInput}
       />
 
       <div className="reviews__button-wrapper">
@@ -81,7 +86,7 @@ export default function ReviewsForm({ hotelId }: ReviewsFormProps): JSX.Element 
           To submit review please make sure to set
           <span className="reviews__star">rating</span>
           and describe your stay with at least
-          <b className="reviews__text-amount">50 characters</b>.
+          <b className="reviews__text-amount">{MIN_LENGTH_COMMENT} characters</b>.
         </p>
 
         <button

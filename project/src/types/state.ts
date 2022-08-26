@@ -16,7 +16,6 @@ export type UserProcess = {
 export type OfferData = {
   offers: Offers,
   currentOffer: Offer | undefined,
-  localOffers: Offers,
   cities: City[],
   currentCity: City,
   favorites: Offers,
@@ -24,9 +23,3 @@ export type OfferData = {
   comments: OfferReviews,
   isDataLoaded: boolean
 };
-
-// export type AppProcess = {
-//   localOffers: Offers,
-//   cities: City[],
-//   currentCity: City
-// };
