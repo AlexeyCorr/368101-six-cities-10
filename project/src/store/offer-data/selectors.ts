@@ -4,7 +4,6 @@ import { City, Offer, OfferReviews, Offers } from '../../types/offer';
 
 export const getOffers = (state: State): Offers => state[NameSpace.Data].offers;
 export const getCurrentOffer = (state: State): Offer | undefined => state[NameSpace.Data].currentOffer;
-export const getLocalOffers = (state: State): Offers => state[NameSpace.Data].localOffers;
 export const getCities = (state: State): City[] => state[NameSpace.Data].cities;
 export const getCurrentCity = (state: State): City => state[NameSpace.Data].currentCity;
 export const getFavorites = (state: State): Offers => state[NameSpace.Data].favorites;

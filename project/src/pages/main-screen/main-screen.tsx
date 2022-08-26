@@ -4,13 +4,15 @@ import CityList from '../../components/city-list/city-list';
 import Main from '../../components/main/main';
 import MainEmpty from '../../components/main-empty/main-empty';
 import { Loader } from '../../components/loader/loader';
-import { getCities, getCurrentCity, getLoadedDataStatus, getLocalOffers } from '../../store/offer-data/selectors';
+import { getCities, getCurrentCity, getLoadedDataStatus, getOffers } from '../../store/offer-data/selectors';
+import { getOffersInCurrentCity } from '../../utils/helpers';
 
 export default function MainScreen(): JSX.Element {
   const cities = useAppSelector(getCities);
   const currentCity = useAppSelector(getCurrentCity);
-  const localOffers = useAppSelector(getLocalOffers);
+  const offers = useAppSelector(getOffers);
   const isDataLoaded = useAppSelector(getLoadedDataStatus);
+  const localOffers = getOffersInCurrentCity(offers, currentCity);
 
   const dispatch = useAppDispatch();
   const isEmpty = !localOffers.length;

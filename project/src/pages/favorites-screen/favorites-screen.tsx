@@ -1,6 +1,8 @@
 import CardList from '../../components/card-list/card-list';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { redirectToRoute } from '../../store/action';
 import { getFavorites } from '../../store/offer-data/selectors';
+import { AppRoute } from '../../utils/const';
 
 export default function FavoritesScreen(): JSX.Element {
   const offers = useAppSelector(getFavorites);
@@ -8,6 +10,12 @@ export default function FavoritesScreen(): JSX.Element {
   offers.forEach((offer) => {
     offer.isFavorite && cities.add(offer.city.name);
   });
+
+  const dispatch = useAppDispatch();
+
+  if (!offers.length) {
+    dispatch(redirectToRoute(AppRoute.Root));
+  }
 
   return (
     <main className="page__main page__main--favorites">

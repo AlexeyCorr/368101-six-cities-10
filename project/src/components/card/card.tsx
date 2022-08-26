@@ -1,15 +1,17 @@
 import { Link } from 'react-router-dom';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { redirectToRoute } from '../../store/action';
 import { changeFavoriteOfferAction } from '../../store/api-actions';
+import { getIsAuth } from '../../store/user-process/selectors';
 import { Offer, ClassNameCard } from '../../types/offer';
 import { AppRoute, ClassNameCardType } from '../../utils/const';
 import { getRatingInPercent } from '../../utils/helpers';
 
 type CardPros = {
-  offer: Offer;
-  cardType: ClassNameCard;
-  onMouseEnterCard: () => void;
-  onMouseLeaveCard: () => void;
+  offer: Offer,
+  cardType: ClassNameCard,
+  onMouseEnterCard: () => void,
+  onMouseLeaveCard: () => void,
 }
 
 export default function Card(props: CardPros): JSX.Element {
@@ -25,7 +27,12 @@ export default function Card(props: CardPros): JSX.Element {
     previewImage
   } = offer;
 
+  const isAuth = useAppSelector(getIsAuth);
+
   const dispatch = useAppDispatch();
+  const setFavorite = () => dispatch(changeFavoriteOfferAction({ hotelId: id, status: isFavorite ? 0 : 1 }));
+  const redirectToLigon = () => dispatch(redirectToRoute(AppRoute.Login));
+  const onCardClick = isAuth ? setFavorite : redirectToLigon;
 
   return (
     <article
@@ -59,7 +66,7 @@ export default function Card(props: CardPros): JSX.Element {
           <button
             className={`place-card__bookmark-button ${isFavorite ? 'place-card__bookmark-button--active' : ''} button`}
             type="button"
-            onClick={() => dispatch(changeFavoriteOfferAction({ hotelId: id, status: isFavorite ? 0 : 1 }))}
+            onClick={onCardClick}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use href="#icon-bookmark" />
