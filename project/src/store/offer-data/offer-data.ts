@@ -59,12 +59,8 @@ export const offerData = createSlice({
         state.comments = action.payload;
         state.isDataLoaded = true;
       })
-      .addCase(fetchFavoriteOffersAction.pending, (state) => {
-        state.isDataLoaded = false;
-      })
       .addCase(fetchFavoriteOffersAction.fulfilled, (state, action) => {
         state.favorites = action.payload;
-        state.isDataLoaded = true;
       });
   }
 });

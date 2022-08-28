@@ -3,24 +3,32 @@ import { useParams } from 'react-router-dom';
 import Reviews from '../../components/reviews/reviews';
 import CardList from '../../components/card-list/card-list';
 import Map from '../../components/map/map';
+import FavoriteButton from '../../components/favorite-button/favorite-button';
 import { getRatingInPercent } from '../../utils/helpers';
 
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppSelector } from '../../hooks';
 import { Loader } from '../../components/loader/loader';
 import { store } from '../../store';
-import { changeFavoriteOfferAction, fetchCommentsAction, fetchCurrentOfferAction, fetchNearbyOffersAction } from '../../store/api-actions';
+import { fetchCommentsAction, fetchCurrentOfferAction, fetchNearbyOffersAction } from '../../store/api-actions';
 import { useEffect, useState } from 'react';
 import { Offer } from '../../types/offer';
 import { getComments, getCurrentCity, getCurrentOffer, getNearby } from '../../store/offer-data/selectors';
-import { redirectToRoute } from '../../store/action';
-import { AppRoute } from '../../utils/const';
-import { getIsAuth } from '../../store/user-process/selectors';
+import NotFoundScreen from '../not-found-screen/not-found-screen';
 
 export default function OfferScreen(): JSX.Element | null {
   const { id } = useParams();
 
+  const currentOffer = useAppSelector(getCurrentOffer);
+
+  const nearby = useAppSelector(getNearby);
+  const comments = useAppSelector(getComments);
+  const currentCity = useAppSelector(getCurrentCity);
+
+  const [ selectedOffer, setSelectedOffer ] = useState<Offer | undefined>(currentOffer);
+  const [ isRejected, setIsRejected ] = useState(false);
+
   async function fetchData(hotelId: number) {
-    await Promise.all([
+    return await Promise.all([
       store.dispatch(fetchCurrentOfferAction(hotelId)),
       store.dispatch(fetchNearbyOffersAction(hotelId)),
       store.dispatch(fetchCommentsAction(hotelId))
@@ -29,19 +37,16 @@ export default function OfferScreen(): JSX.Element | null {
 
   useEffect(() => {
     if (id) {
-      fetchData(Number(id));
+      fetchData(Number(id))
+        .then((results) => {
+          setIsRejected(results.some(({ meta }) => meta.requestStatus === 'rejected'));
+        });
     }
   }, [id]);
 
-  const dispatch = useAppDispatch();
-
-  const currentOffer = useAppSelector(getCurrentOffer);
-  const isAuth = useAppSelector(getIsAuth);
-  const nearby = useAppSelector(getNearby);
-  const comments = useAppSelector(getComments);
-  const currentCity = useAppSelector(getCurrentCity);
-
-  const [ selectedOffer, setSelectedOffer ] = useState<Offer | undefined>(currentOffer);
+  if (isNaN(Number(id)) || isRejected) {
+    return <NotFoundScreen />;
+  }
 
   if (!id || !currentOffer) {
     return <Loader />;
@@ -63,14 +68,6 @@ export default function OfferScreen(): JSX.Element | null {
   } = currentOffer;
 
   const nearbyOffers = [...nearby, currentOffer];
-
-  const setFavorite = async () => {
-    await dispatch(changeFavoriteOfferAction({ hotelId: Number(id), status: isFavorite ? 0 : 1 }));
-    dispatch(fetchCurrentOfferAction(Number(id)));
-  };
-
-  const redirectToLigon = () => dispatch(redirectToRoute(AppRoute.Login));
-  const onCardClick = isAuth ? setFavorite : redirectToLigon;
 
   return (
     <main className="page__main page__main--property">
@@ -105,21 +102,13 @@ export default function OfferScreen(): JSX.Element | null {
                 {title}
               </h1>
 
-              <button
-                className="property__bookmark-button button"
-                type="button"
-                onClick={onCardClick}
-              >
-                <svg
-                  className="property__bookmark-icon place-card__bookmark-icon"
-                  width={31}
-                  height={33}
-                  style={isFavorite ? { stroke: '#4481DC', fill: '#4481c3' } : {}}
-                >
-                  <use xlinkHref="#icon-bookmark" />
-                </svg>
-                <span className="visually-hidden">To bookmarks</span>
-              </button>
+              <FavoriteButton
+                id={Number(id)}
+                size="big"
+                isFavorite={isFavorite}
+                blockName="property"
+              />
+
             </div>
             <div className="property__rating rating">
               <div className="property__stars rating__stars">
@@ -198,8 +187,8 @@ export default function OfferScreen(): JSX.Element | null {
             className="near-places__list"
             offers={nearby}
             cardType={'recommend'}
-            onMouseEnterCard={(offer) => setSelectedOffer(offer)}
-            onMouseLeaveCard={() => setSelectedOffer(currentOffer)}
+            handleCardMouseEnter={(offer) => setSelectedOffer(offer)}
+            handleCardMouseLeave={() => setSelectedOffer(currentOffer)}
           />
         </section>
       </div>

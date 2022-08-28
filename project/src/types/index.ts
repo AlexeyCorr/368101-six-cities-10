@@ -1,4 +1,4 @@
 export type Sort = {
-  type: string;
-  name: string;
+  type: string,
+  name: string,
 }

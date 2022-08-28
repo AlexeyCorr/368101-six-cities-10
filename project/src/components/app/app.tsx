@@ -23,14 +23,14 @@ function App(): JSX.Element {
       <ScrollToTop />
 
       <Routes>
+        <Route
+          path={AppRoute.Login}
+          element={<LoginScreen />}
+        />
         <Route path='/' element={<DefaultLayout />}>
           <Route
             index
             element={<MainScreen />}
-          />
-          <Route
-            path={AppRoute.Login}
-            element={<LoginScreen />}
           />
           <Route
             path={AppRoute.CurrentOffer}

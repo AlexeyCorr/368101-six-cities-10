@@ -4,10 +4,10 @@ import { Sort } from '../../types';
 type SortProps = {
   sorts: Sort[];
   currentSort: Sort;
-  onClickSort: (sort: Sort) => void;
+  handleSortClick: (sort: Sort) => void;
 }
 
-export default function Sorts({ sorts, currentSort, onClickSort }: SortProps): JSX.Element {
+export default function Sorts({ sorts, currentSort, handleSortClick }: SortProps): JSX.Element {
   const [isOpenSort, setIsOpenSort] = useState(false);
 
   return (
@@ -37,7 +37,7 @@ export default function Sorts({ sorts, currentSort, onClickSort }: SortProps): J
             tabIndex={0}
             data-sort-type={sort.type}
             onClick={() => {
-              onClickSort(sort);
+              handleSortClick(sort);
               setIsOpenSort(false);
             }}
           >

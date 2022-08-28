@@ -32,13 +32,13 @@ export default function Map(props: MapProps): JSX.Element {
 
   useEffect(() => {
     if (map) {
-      offers.forEach(({ id, location }) => {
+      const markers = offers.map(({ id, location }) => {
         const marker = new Marker({
           lat: location.latitude,
           lng: location.longitude,
         });
 
-        marker
+        return marker
           .setIcon(
             selectedOffer !== undefined && id === selectedOffer.id
               ? currentCustomIcon
@@ -48,6 +48,12 @@ export default function Map(props: MapProps): JSX.Element {
       });
 
       map.panTo(new LatLng(city.location.latitude, city.location.longitude));
+
+      return () => {
+        markers.forEach((marker) => {
+          marker.removeFrom(map);
+        });
+      };
     }
   }, [city, map, offers, selectedOffer]);
 
