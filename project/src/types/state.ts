@@ -10,7 +10,7 @@ export type AppDispatch = typeof store.dispatch;
 export type UserProcess = {
   authorizationStatus: AuthorizationStatus,
   userData: UserData | null,
-  isAuth: boolean
+  isAuth: boolean,
 };
 
 export type OfferData = {
@@ -21,5 +21,5 @@ export type OfferData = {
   favorites: Offers,
   nearby: Offers,
   comments: OfferReviews,
-  isDataLoaded: boolean
+  isDataLoaded: boolean,
 };

@@ -7,8 +7,8 @@ import { SORTS } from '../../utils/const';
 import { getSortedOffers } from '../../utils/helpers';
 
 type MainProps = {
-  offers: Offers
-  city: City
+  offers: Offers,
+  city: City,
 }
 
 export default function Main({ offers, city }: MainProps): JSX.Element {
@@ -16,8 +16,8 @@ export default function Main({ offers, city }: MainProps): JSX.Element {
   const [sortedOffers, setSortedOffers] = useState(offers);
   const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(undefined);
 
-  const onMouseEnterCard = useCallback((offer: Offer) => setSelectedOffer(offer), []);
-  const onMouseLeaveCard = useCallback(() => setSelectedOffer(undefined), []);
+  const handleCardMouseEnter = useCallback((offer: Offer) => setSelectedOffer(offer), []);
+  const handleCardMouseLeave = useCallback(() => setSelectedOffer(undefined), []);
 
   useEffect(() => {
     setSortedOffers(getSortedOffers(currentSort, offers));
@@ -37,15 +37,15 @@ export default function Main({ offers, city }: MainProps): JSX.Element {
         <Sorts
           sorts={SORTS}
           currentSort={currentSort}
-          onClickSort={setCurrentSort}
+          handleSortClick={setCurrentSort}
         />
 
         <CardList
           className="cities__places-list places__list tabs__content"
           offers={sortedOffers}
           cardType={'main'}
-          onMouseEnterCard={onMouseEnterCard}
-          onMouseLeaveCard={onMouseLeaveCard}
+          handleCardMouseEnter={handleCardMouseEnter}
+          handleCardMouseLeave={handleCardMouseLeave}
         />
       </section>
 

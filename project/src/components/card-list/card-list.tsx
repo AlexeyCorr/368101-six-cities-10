@@ -6,12 +6,12 @@ type CardListProps = {
   offers: Offers;
   className: string;
   cardType: ClassNameCard;
-  onMouseEnterCard?: (offer: Offer) => void;
-  onMouseLeaveCard?: () => void;
+  handleCardMouseEnter?: (offer: Offer) => void;
+  handleCardMouseLeave?: () => void;
 }
 
 function CardList(props: CardListProps): JSX.Element {
-  const { offers, className, cardType, onMouseEnterCard, onMouseLeaveCard } = props;
+  const { offers, className, cardType, handleCardMouseEnter, handleCardMouseLeave } = props;
 
   return (
     <div className={className}>
@@ -20,8 +20,8 @@ function CardList(props: CardListProps): JSX.Element {
           key={offer.id}
           offer={offer}
           cardType={cardType}
-          onMouseEnterCard={() => onMouseEnterCard && onMouseEnterCard(offer)}
-          onMouseLeaveCard={() => onMouseLeaveCard && onMouseLeaveCard()}
+          handleCardMouseEnter={handleCardMouseEnter}
+          handleCardMouseLeave={handleCardMouseLeave}
         />
       ))}
     </div>

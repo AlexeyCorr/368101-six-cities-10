@@ -1,12 +1,12 @@
 import { City } from '../../types/offer';
 
 type CityListProps = {
-  cities: City[];
-  currentCity: City;
-  onClickCityHandler: (city: City) => void;
+  cities: City[],
+  currentCity: City,
+  handleCityClick: (city: City) => void,
 }
 
-export default function CityList({ cities, currentCity, onClickCityHandler }: CityListProps): JSX.Element {
+export default function CityList({ cities, currentCity, handleCityClick }: CityListProps): JSX.Element {
   return (
     <div className="tabs">
       <section className="locations container">
@@ -21,7 +21,7 @@ export default function CityList({ cities, currentCity, onClickCityHandler }: Ci
                 href="#"
                 onClick={(evt) => {
                   evt.preventDefault();
-                  onClickCityHandler(city);
+                  handleCityClick(city);
                 }}
               >
                 <span>{city.name}</span>

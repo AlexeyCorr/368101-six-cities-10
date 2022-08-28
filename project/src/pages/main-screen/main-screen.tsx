@@ -27,7 +27,7 @@ export default function MainScreen(): JSX.Element {
       <CityList
         currentCity={currentCity}
         cities={cities}
-        onClickCityHandler={(city) => {
+        handleCityClick={(city) => {
           dispatch(changeCurrentCity(city));
         }}
       />

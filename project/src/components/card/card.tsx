@@ -1,21 +1,18 @@
 import { Link } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { redirectToRoute } from '../../store/action';
-import { changeFavoriteOfferAction } from '../../store/api-actions';
-import { getIsAuth } from '../../store/user-process/selectors';
 import { Offer, ClassNameCard } from '../../types/offer';
 import { AppRoute, ClassNameCardType } from '../../utils/const';
 import { getRatingInPercent } from '../../utils/helpers';
+import FavoriteButton from '../favorite-button/favorite-button';
 
 type CardPros = {
   offer: Offer,
   cardType: ClassNameCard,
-  onMouseEnterCard: () => void,
-  onMouseLeaveCard: () => void,
+  handleCardMouseEnter?: (offer: Offer) => void,
+  handleCardMouseLeave?: () => void,
 }
 
 export default function Card(props: CardPros): JSX.Element {
-  const { offer, cardType, onMouseEnterCard, onMouseLeaveCard } = props;
+  const { offer, cardType, handleCardMouseEnter, handleCardMouseLeave } = props;
   const {
     id,
     price,
@@ -27,18 +24,11 @@ export default function Card(props: CardPros): JSX.Element {
     previewImage
   } = offer;
 
-  const isAuth = useAppSelector(getIsAuth);
-
-  const dispatch = useAppDispatch();
-  const setFavorite = () => dispatch(changeFavoriteOfferAction({ hotelId: id, status: isFavorite ? 0 : 1 }));
-  const redirectToLigon = () => dispatch(redirectToRoute(AppRoute.Login));
-  const onCardClick = isAuth ? setFavorite : redirectToLigon;
-
   return (
     <article
       className={`${ClassNameCardType[cardType].card} place-card`}
-      onMouseEnter={onMouseEnterCard}
-      onMouseLeave={onMouseLeaveCard}
+      onMouseEnter={() => handleCardMouseEnter?.(offer)}
+      onMouseLeave={handleCardMouseLeave}
     >
       {
         isPremium
@@ -63,16 +53,13 @@ export default function Card(props: CardPros): JSX.Element {
             <b className="place-card__price-value">€{price}</b>
             <span className="place-card__price-text">/&nbsp;night</span>
           </div>
-          <button
-            className={`place-card__bookmark-button ${isFavorite ? 'place-card__bookmark-button--active' : ''} button`}
-            type="button"
-            onClick={onCardClick}
-          >
-            <svg className="place-card__bookmark-icon" width="18" height="19">
-              <use href="#icon-bookmark" />
-            </svg>
-            <span className="visually-hidden">To bookmarks</span>
-          </button>
+
+          <FavoriteButton
+            id={id}
+            isFavorite={isFavorite}
+            blockName="place-card"
+          />
+
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
