@@ -52,7 +52,7 @@ export type Comment = {
 
 export type OfferReview = {
   comment: string,
-  date: string,
+  date: Date,
   id: number,
   rating: number,
   user: {
