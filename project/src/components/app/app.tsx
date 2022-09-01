@@ -25,7 +25,14 @@ function App(): JSX.Element {
       <Routes>
         <Route
           path={AppRoute.Login}
-          element={<LoginScreen />}
+          element={
+            <PrivateRoute
+              condition='auth'
+              authorizationStatus={authorizationStatus}
+            >
+              <LoginScreen />
+            </PrivateRoute>
+          }
         />
         <Route path='/' element={<DefaultLayout />}>
           <Route
@@ -39,7 +46,10 @@ function App(): JSX.Element {
           <Route
             path={AppRoute.Favorites}
             element={
-              <PrivateRoute authorizationStatus={authorizationStatus}>
+              <PrivateRoute
+                condition='noAuth'
+                authorizationStatus={authorizationStatus}
+              >
                 <FavoritesScreen />
               </PrivateRoute>
             }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { redirectToRoute } from '../../store/action';
 import { changeFavoriteOfferAction } from '../../store/api-actions';
@@ -31,6 +31,10 @@ type FavoriteButtonProps = {
 export default function FavoriteButton({ id, size = 'small', isFavorite, blockName }: FavoriteButtonProps) {
   const isAuth = useAppSelector(getIsAuth);
   const [ isLocalFavorite, setIsLocalfavorite ] = useState(isFavorite);
+
+  useEffect(() => {
+    setIsLocalfavorite(isFavorite);
+  }, [id, isFavorite]);
 
   const dispatch = useAppDispatch();
 

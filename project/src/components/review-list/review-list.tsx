@@ -1,14 +1,23 @@
 import { OfferReviews } from '../../types/offer';
 import { getRatingInPercent } from '../../utils/helpers';
 
+const MAX_COMMENTS = 10;
+
 type ReviewListProps = {
   reviews: OfferReviews;
 }
 
 export default function ReviewList({ reviews }: ReviewListProps): JSX.Element {
+  const sortedReviews = [...reviews].sort((a, b) => {
+    const aDate = Date.parse(a.date.toString());
+    const bDate = Date.parse(b.date.toString());
+
+    return bDate - aDate;
+  });
+
   return (
     <ul className="reviews__list">
-      {reviews.map((review): JSX.Element => {
+      {sortedReviews.slice(0, MAX_COMMENTS).map((review): JSX.Element => {
         const {comment, date, id, rating, user} = review;
         const commentDate = new Date(date);
 

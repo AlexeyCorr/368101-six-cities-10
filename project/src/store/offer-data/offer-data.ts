@@ -36,6 +36,7 @@ export const offerData = createSlice({
       })
       .addCase(fetchCurrentOfferAction.fulfilled, (state, action) => {
         state.currentOffer = action.payload;
+
         state.isDataLoaded = true;
       })
       .addCase(fetchNearbyOffersAction.pending, (state) => {

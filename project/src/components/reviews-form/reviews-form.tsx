@@ -19,6 +19,7 @@ type ReviewsFormProps = {
 export default function ReviewsForm({ hotelId }: ReviewsFormProps): JSX.Element {
   const [ review, setReview ] = useState('');
   const [ rating, setRating ] = useState(0);
+  const [ message, setMessage ] = useState('');
 
   const dispatch = useAppDispatch();
 
@@ -33,9 +34,17 @@ export default function ReviewsForm({ hotelId }: ReviewsFormProps): JSX.Element 
   const onReviewSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    dispatch(sendCommentAction({ hotelId, comment: { comment: review, rating }}));
-    setReview('');
-    setRating(0);
+    dispatch(sendCommentAction({ hotelId, comment: { comment: review, rating }})).then(({ meta }) => {
+      if (meta.requestStatus === 'rejected') {
+        setMessage('Что-то пошло не так, попробуйте перезагрузить страницу и повторить попытку');
+        return;
+      }
+
+      message && setMessage('');
+      setReview('');
+      setRating(0);
+    });
+
   };
 
   return (
@@ -80,6 +89,18 @@ export default function ReviewsForm({ hotelId }: ReviewsFormProps): JSX.Element 
         minLength={MIN_LENGTH_COMMENT}
         onInput={onReviewInput}
       />
+
+      {message
+        ? (
+          <span
+            style={{
+              fontSize: '11px',
+              color: 'red'
+            }}
+          >
+            {message}
+          </span>)
+        : null}
 
       <div className="reviews__button-wrapper">
         <p className="reviews__help">

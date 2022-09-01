@@ -4,19 +4,23 @@ import { Loader } from '../loader/loader';
 
 type PrivateRouteProps = {
   authorizationStatus: AuthorizationStatus,
+  condition: string,
   children: JSX.Element
 }
 
 export default function PrivateRoute(props: PrivateRouteProps): JSX.Element {
-  const { children, authorizationStatus } = props;
+  const { children, authorizationStatus, condition } = props;
+
+  const route = condition === 'auth' ? AppRoute.Root : AppRoute.Login;
+  const status = condition === 'auth' ? AuthorizationStatus.NoAuth : AuthorizationStatus.Auth;
 
   if (authorizationStatus === AuthorizationStatus.Unknown) {
     return <Loader />;
   }
 
   return (
-    authorizationStatus === AuthorizationStatus.Auth
+    authorizationStatus === status
       ? children
-      : <Navigate to={AppRoute.Login} />
+      : <Navigate to={route} />
   );
 }

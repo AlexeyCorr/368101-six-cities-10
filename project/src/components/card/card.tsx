@@ -63,7 +63,7 @@ export default function Card(props: CardPros): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: `${getRatingInPercent(rating)}`}} />
+            <span style={{width: `${getRatingInPercent(Math.round(rating))}`}} />
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

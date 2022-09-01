@@ -112,10 +112,10 @@ export default function OfferScreen(): JSX.Element | null {
             </div>
             <div className="property__rating rating">
               <div className="property__stars rating__stars">
-                <span style={{width: getRatingInPercent(rating)}} />
+                <span style={{width: getRatingInPercent(Math.round(rating))}} />
                 <span className="visually-hidden">Rating</span>
               </div>
-              <span className="property__rating-value rating__value">{rating}</span>
+              <span className="property__rating-value rating__value">{Math.round(rating)}</span>
             </div>
             <ul className="property__features">
               <li className="property__feature property__feature--entire">

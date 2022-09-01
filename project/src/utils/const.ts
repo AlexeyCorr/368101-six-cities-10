@@ -42,13 +42,13 @@ export const ClassNameCardType = {
 };
 
 export const MarkerDefault = {
-  URL: 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg',
+  URL: './img/pin.svg',
   WIDTH: 40,
   HEIGHT: 40
 };
 
 export const MarkerCurrent = {
-  URL: 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/main-pin.svg',
+  URL: './img/pin-active.svg',
   WIDTH: 40,
   HEIGHT: 40
 };

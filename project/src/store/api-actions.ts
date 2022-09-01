@@ -91,6 +91,7 @@ export const changeFavoriteOfferAction = createAsyncThunk<void, { hotelId: numbe
   async ({ hotelId, status }, { dispatch, extra: api }) => {
     await api.post<Offer>(`${APIRoute.Favorite}/${hotelId}/${status}`);
     dispatch(fetchFavoriteOffersAction());
+    dispatch(fetchOffersAction());
   },
 );
 
