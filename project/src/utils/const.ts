@@ -43,14 +43,14 @@ export const ClassNameCardType = {
 
 export const MarkerDefault = {
   URL: './img/pin.svg',
-  WIDTH: 40,
-  HEIGHT: 40
+  WIDTH: 27,
+  HEIGHT: 39
 };
 
 export const MarkerCurrent = {
   URL: './img/pin-active.svg',
-  WIDTH: 40,
-  HEIGHT: 40
+  WIDTH: 27,
+  HEIGHT: 39
 };
 
 export const CITIES: City[] = [

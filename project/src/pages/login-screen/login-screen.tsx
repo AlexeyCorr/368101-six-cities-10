@@ -77,6 +77,7 @@ export default function LoginScreen(): JSX.Element {
                   name="email"
                   placeholder="Email"
                   required
+                  data-testid="login"
                 />
               </div>
               <div
@@ -94,6 +95,7 @@ export default function LoginScreen(): JSX.Element {
                   name="password"
                   placeholder="Password"
                   required
+                  data-testid="password"
                 />
 
                 {message

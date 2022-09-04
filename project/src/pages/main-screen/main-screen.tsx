@@ -3,7 +3,7 @@ import { changeCurrentCity } from '../../store/offer-data/offer-data';
 import CityList from '../../components/city-list/city-list';
 import Main from '../../components/main/main';
 import MainEmpty from '../../components/main-empty/main-empty';
-import { Loader } from '../../components/loader/loader';
+import Loader from '../../components/loader/loader';
 import { getCities, getCurrentCity, getLoadedDataStatus, getOffers } from '../../store/offer-data/selectors';
 import { getOffersInCurrentCity } from '../../utils/helpers';
 

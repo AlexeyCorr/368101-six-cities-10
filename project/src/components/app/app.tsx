@@ -9,59 +9,49 @@ import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 import FavoritesScreen from '../../pages/favorites-screen/favorites-screen';
 import LoginScreen from '../../pages/login-screen/login-screen';
 import OfferScreen from '../../pages/offer-screen/offer-screen';
-import ScrollToTop from '../scroll-to-top/scroll-to-top';
 import PrivateRoute from '../private-route/private-route';
-import HistoryRouter from '../history-route/history-route';
 
-import browserHistory from '../../browser-history';
-
-function App(): JSX.Element {
+export default function App(): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   return (
-    <HistoryRouter history={browserHistory}>
-      <ScrollToTop />
-
-      <Routes>
+    <Routes>
+      <Route
+        path={AppRoute.Login}
+        element={
+          <PrivateRoute
+            condition='auth'
+            authorizationStatus={authorizationStatus}
+          >
+            <LoginScreen />
+          </PrivateRoute>
+        }
+      />
+      <Route path='/' element={<DefaultLayout />}>
         <Route
-          path={AppRoute.Login}
+          index
+          element={<MainScreen />}
+        />
+        <Route
+          path={AppRoute.CurrentOffer}
+          element={<OfferScreen />}
+        />
+        <Route
+          path={AppRoute.Favorites}
           element={
             <PrivateRoute
-              condition='auth'
+              condition='noAuth'
               authorizationStatus={authorizationStatus}
             >
-              <LoginScreen />
+              <FavoritesScreen />
             </PrivateRoute>
           }
         />
-        <Route path='/' element={<DefaultLayout />}>
-          <Route
-            index
-            element={<MainScreen />}
-          />
-          <Route
-            path={AppRoute.CurrentOffer}
-            element={<OfferScreen />}
-          />
-          <Route
-            path={AppRoute.Favorites}
-            element={
-              <PrivateRoute
-                condition='noAuth'
-                authorizationStatus={authorizationStatus}
-              >
-                <FavoritesScreen />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="*"
-            element={<NotFoundScreen />}
-          />
-        </Route>
-      </Routes>
-    </HistoryRouter>
+        <Route
+          path="*"
+          element={<NotFoundScreen />}
+        />
+      </Route>
+    </Routes>
   );
 }
-
-export default App;

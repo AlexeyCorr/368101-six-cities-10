@@ -7,7 +7,7 @@ import FavoriteButton from '../../components/favorite-button/favorite-button';
 import { getRatingInPercent } from '../../utils/helpers';
 
 import { useAppSelector } from '../../hooks';
-import { Loader } from '../../components/loader/loader';
+import Loader from '../../components/loader/loader';
 import { store } from '../../store';
 import { fetchCommentsAction, fetchCurrentOfferAction, fetchNearbyOffersAction } from '../../store/api-actions';
 import { useEffect, useState } from 'react';

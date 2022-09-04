@@ -1,8 +1,11 @@
 import './style.css';
 
-export function Loader(): JSX.Element {
+export default function Loader(): JSX.Element {
   return (
-    <div className='loader'>
+    <div
+      className='loader'
+      aria-label='Идет загрузка данных'
+    >
       <svg
         className='loader__svg'
         width="66"

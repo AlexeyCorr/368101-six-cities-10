@@ -88,6 +88,7 @@ export default function ReviewsForm({ hotelId }: ReviewsFormProps): JSX.Element 
         value={review}
         minLength={MIN_LENGTH_COMMENT}
         onInput={onReviewInput}
+        data-testid="review"
       />
 
       {message

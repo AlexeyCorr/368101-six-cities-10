@@ -58,6 +58,7 @@ export default function FavoriteButton({ id, size = 'small', isFavorite, blockNa
       className={`${blockName}__bookmark-button button`}
       type="button"
       onClick={handleButtonClick}
+      aria-label={isLocalFavorite ? 'Добавлено в favorite' : 'Не добавлено в favorite'}
     >
       <svg
         className={`${blockName}__bookmark-icon`}
